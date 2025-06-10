@@ -1,0 +1,13 @@
+torch>=2.0.0
+transformers>=4.30.0
+langchain>=0.0.200
+langchain-community>=0.0.10  # Required for HuggingFaceEmbeddings
+faiss-cpu>=1.7.4
+pandas>=1.5.0
+openpyxl>=3.1.0  # for Excel file support
+sentence-transformers>=2.2.0  # for HuggingFaceEmbeddings
+fastapi>=0.100.0  # for API
+uvicorn>=0.22.0  # for API server
+python-multipart>=0.0.6  # for API file uploads
+pydantic>=2.0.0  # for API data validation
+sentencepiece>=0.1.99  # Required for T5Tokenizer
