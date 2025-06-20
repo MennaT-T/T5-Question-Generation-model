@@ -11,3 +11,7 @@ uvicorn>=0.22.0  # for API server
 python-multipart>=0.0.6  # for API file uploads
 pydantic>=2.0.0  # for API data validation
 sentencepiece>=0.1.99  # Required for T5Tokenizer
+
+nltk>=3.8.1
+PyMuPDF>=1.23.7
+unidecode>=1.3.6

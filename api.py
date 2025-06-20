@@ -5,6 +5,7 @@ from typing import List
 import uvicorn
 import logging
 from rag_pipeline import generate_question  # Updated import
+from res_match import match_resume_to_jd # Updated import
 import os
 
 # Configure logging
@@ -34,6 +35,17 @@ class JobDescription(BaseModel):
 
 class QuestionResponse(BaseModel):
     questions: List[str]
+    
+class Resume(BaseModel):
+    # BLOB file PDF binary data
+    file: bytes
+    JobDescription: str
+
+class ResumeMatchingResponse(BaseModel):
+    matchedSkills: List[str]
+    MissingSkills: List[str]
+    ResumeScore: float
+
 
 @app.post("/generate-questions", response_model=QuestionResponse)
 async def generate_questions(job_description: JobDescription):
@@ -47,6 +59,19 @@ async def generate_questions(job_description: JobDescription):
         return QuestionResponse(questions=questions)
     except Exception as e:
         logger.error(f"Error generating questions: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/resume-matching", response_model=ResumeMatchingResponse)
+async def resume_matching(resume: Resume):
+    try:
+        logger.info(f"Received request for resume matching: {resume.file[:100]}...")
+        matches = match_resume_to_jd(resume.file, resume.JobDescription)
+        logger.info(f"Successfully found {len(matches)} matching jobs")
+        return ResumeMatchingResponse(matchedSkills=matches.get("matched_skills", []),
+                                       MissingSkills=matches.get("missing_skills", []),
+                                       ResumeScore=matches.get("matching_score", 0.0))
+    except Exception as e:
+        logger.error(f"Error matching resume: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.get("/")
