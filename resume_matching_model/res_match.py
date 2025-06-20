@@ -1,3 +1,4 @@
+import base64
 from transformers import DebertaForTokenClassification, DebertaTokenizerFast
 import fitz  # PyMuPDF
 import nltk
@@ -71,7 +72,10 @@ class SkillMatcher:
             "matching_score": round(similarity_score, 2)
         }
         
-def match_resume_to_jd(resume_pdf_binary, jd_text):
+def match_resume_to_jd(resume_pdf_bytes, jd_text):
     matcher = SkillMatcher()
+    try:
+        resume_pdf_binary = base64.b64decode(resume_pdf_bytes) 
+    except Exception as e:
+        raise ValueError("Invalid PDF binary data") from e
     return matcher.match_resume_to_jd(resume_pdf_binary, jd_text)
-

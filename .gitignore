@@ -1,2 +1,4 @@
 t5_question_gen_model
 skill_extractor_model
+__pycache__/
+__pycache__/*
