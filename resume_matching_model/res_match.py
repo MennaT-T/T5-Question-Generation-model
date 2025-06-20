@@ -1,16 +1,16 @@
 from transformers import DebertaForTokenClassification, DebertaTokenizerFast
 import fitz  # PyMuPDF
+import nltk
 from unidecode import unidecode
 from nltk.tokenize import sent_tokenize, word_tokenize
 import torch
 import io
-import nltk
 
 nltk.download('punkt')
 nltk.download('punkt_tab')
 
 class SkillMatcher:
-    def __init__(self, model_path="./skill_extractor_model"):
+    def __init__(self, model_path="resume_matching_model/skill_extractor_model"):
         self.tokenizer = DebertaTokenizerFast.from_pretrained(model_path, add_prefix_space=True)
         self.model = DebertaForTokenClassification.from_pretrained(model_path)
 
@@ -74,3 +74,4 @@ class SkillMatcher:
 def match_resume_to_jd(resume_pdf_binary, jd_text):
     matcher = SkillMatcher()
     return matcher.match_resume_to_jd(resume_pdf_binary, jd_text)
+

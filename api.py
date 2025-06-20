@@ -4,8 +4,8 @@ from pydantic import BaseModel
 from typing import List
 import uvicorn
 import logging
-from rag_pipeline import generate_question  # Updated import
-from res_match import match_resume_to_jd # Updated import
+from T5_Model.rag_pipeline import generate_question  # Updated import
+from resume_matching_model.res_match import match_resume_to_jd # Updated import
 import os
 
 # Configure logging
