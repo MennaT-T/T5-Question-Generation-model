@@ -1,0 +1,16 @@
+# core libraries
+
+# computing & data handling
+numpy>=1.24.0
+
+# machine learning
+scikit-learn>=1.3.0
+joblib>=1.2.0
+
+# fuzzy matching
+fuzzywuzzy>=0.18.0
+python-Levenshtein>=0.12.2
+
+# plotting (for confusion matrix)
+matplotlib>=3.7.0
+seaborn>=0.12.2

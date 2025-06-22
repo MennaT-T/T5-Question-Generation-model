@@ -1,3 +1,4 @@
+from math import pi
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -5,7 +6,7 @@ from typing import List
 import uvicorn
 import logging
 from T5_Model.rag_pipeline import generate_question  # Updated import
-from resume_matching_model.res_match import match_resume_to_jd # Updated import
+from resume_matching_model.app import PipelineProcessor  # Updated import
 import os
 
 # Configure logging
@@ -65,7 +66,8 @@ async def generate_questions(job_description: JobDescription):
 async def resume_matching(resume: Resume):
     try:
         logger.info(f"Received request for resume matching: {resume.file[:100]}...")
-        matches = match_resume_to_jd(resume.file, resume.JobDescription)
+        pipeline_processor = PipelineProcessor()  # Initialize the pipeline processor
+        matches = pipeline_processor.process(resume_input=resume.file, jd_text=resume.JobDescription)
         logger.info(f"Successfully found {len(matches)} matching jobs")
         return ResumeMatchingResponse(matchedSkills=matches.get("matched_skills", []),
                                        MissingSkills=matches.get("missing_skills", []),
